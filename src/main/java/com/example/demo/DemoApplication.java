@@ -19,8 +19,11 @@ public class DemoApplication {
 	@RequestMapping(value = "level2")
 	@ResponseBody
 	public String user(HttpServletRequest request) {
+		//从request请求中获取keycloak验证信息主体
 		KeycloakSecurityContext keycloakSecurityContext = getKeycloakSecurityContext(request);
+		//从验证信息中获取id_token，并从token中获取用户名。token中也包含其他用户信息
 		String username = keycloakSecurityContext.getIdToken().getPreferredUsername();
+		//从验证信息中获取id_token，并从token中获取realm访问权限的角色信息，判断用户是否拥有user角色
 		if(keycloakSecurityContext.getToken().getRealmAccess().getRoles().contains("user")){
 			return "hello user " + username;
 		}
@@ -30,8 +33,11 @@ public class DemoApplication {
 	@RequestMapping(value = "level1")
 	@ResponseBody
 	public String admin(HttpServletRequest request) {
+		//从request请求中获取keycloak验证信息主体
 		KeycloakSecurityContext keycloakSecurityContext = getKeycloakSecurityContext(request);
+		//从验证信息中获取id_token，并从token中获取用户名。token中也包含其他用户信息
 		String username = keycloakSecurityContext.getIdToken().getPreferredUsername();
+		//从验证信息中获取id_token，并从token中获取realm访问权限的角色信息，判断用户是否拥有admin角色
 		if(keycloakSecurityContext.getToken().getRealmAccess().getRoles().contains("admin")){
 			return "hello admin " + username;
 		}
